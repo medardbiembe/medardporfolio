@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+/* =========================================
+   CONFIGURATION TAILWIND V4 & POLICES
+========================================= */
+@theme {
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+/* =========================================
+   BASE & CORRECTIONS MOBILE
+========================================= */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem; /* Évite que le menu fixe cache les titres */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden; /* Anti-scroll horizontal sur mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================
+   LE CIEL BLEU (Style Josh Comeau)
+========================================= */
+.hero-sky {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Le dégradé de fond */
+.hero-sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    180deg,
+    #a0d4ee 0%,    /* Bleu ciel */
+    #b1dff6 50%,   /* Bleu clair */
+    #fafafa 100%   /* Se fond dans ton fond gris clair */
+  );
+}
+
+/* Les petits nuages doux */
+.hero-sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 400px 150px at 20% 80%, rgba(255, 255, 255, 0.6), transparent 70%),
+    radial-gradient(ellipse 500px 200px at 80% 60%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(ellipse 300px 120px at 50% 90%, rgba(255, 255, 255, 0.7), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-sky h1 {
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* =========================================
+   MICRO-INTERACTIONS (Hover)
+========================================= */
+
+/* Trait animé sous les liens du menu (sauf le bouton) */
+header nav a:not([class*="rounded-full"]) {
+  position: relative;
+}
+header nav a:not([class*="rounded-full"])::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #2563eb;
+  transition: width 0.3s ease;
+}
+header nav a:not([class*="rounded-full"]):hover::after {
+  width: 100%;
+}
+
+/* Effet sur la carte de code du Hero */
+.hero-code-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.hero-code-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================
+   ACCESSIBILITÉ & IMPRESSION
+========================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  header, footer, nav { display: none; }
+  body { background: white; color: black; }
+}
+
