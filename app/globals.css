@@ -113,6 +113,15 @@ header nav a:not([class*="rounded-full"]):hover::after {
 }
 
 /* =========================================
+   CORRECTIONS SPÉCIALES POUR iPHONE / SAFARI
+========================================= */
+button, a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+/* =========================================
    ACCESSIBILITÉ & IMPRESSION
 ========================================= */
 @media (prefers-reduced-motion: reduce) {
@@ -128,4 +137,3 @@ header nav a:not([class*="rounded-full"]):hover::after {
   header, footer, nav { display: none; }
   body { background: white; color: black; }
 }
-

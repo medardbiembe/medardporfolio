@@ -15,7 +15,11 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  // 👇 C'EST ICI QU'ON AJOUTE LA CONFIGURATION POUR LES IMAGES 👇
+  
+  // 👇 LA LIGNE MAGIQUE POUR VERCEL (Prisma + SQLite)
+  serverExternalPackages: ["better-sqlite3", "@prisma/client"],
+
+  // 👇 CONFIGURATION POUR LES IMAGES
   images: {
     remotePatterns: [
       {

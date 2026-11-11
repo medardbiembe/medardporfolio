@@ -240,23 +240,33 @@ const experiencesData = [
 
 export default function Home() {
   const [currentYear, setCurrentYear] = useState(2026);
-  const [lang, setLang] = useState<"FR" | "EN">("FR");
   
+  // 👇 L'ASTUCE : On lit l'URL IMMÉDIATEMENT, pas dans un useEffect
+  const [lang, setLang] = useState<"FR" | "EN">(() => {
+    if (typeof window === "undefined") return "FR";
+    
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get("lang");
+    
+    if (urlLang === "EN") return "EN";
+    if (urlLang === "FR") return "FR";
+    
+    const savedLang = localStorage.getItem("portfolio-lang");
+    if (savedLang === "EN") return "EN";
+    
+    return "FR";
+  });
+
   const t = translations[lang];
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
+    localStorage.setItem("portfolio-lang", lang);
+  }, [lang]);
 
-    // 👇 On lit l'URL au chargement de la page
-    const params = new URLSearchParams(window.location.search);
-    const urlLang = params.get("lang");
-    
-    if (urlLang === "EN") {
-      setLang("EN");
-    } else if (urlLang === "FR") {
-      setLang("FR");
-    }
-  }, []);
+  const handleLanguageClick = (newLang: "FR" | "EN") => {
+    window.location.href = `?lang=${newLang}`;
+  };
 
   const navigation = [
     [t.nav.home, "#home"],
@@ -287,19 +297,25 @@ export default function Home() {
           </div>
 
           <div className="hidden items-center gap-4 md:flex">
-            {/* DESKTOP LANG BUTTON (Liens) */}
-            <a
-              href="?lang=FR"
-              className={`text-sm font-bold transition hover:text-blue-600 border border-gray-200 rounded-full px-3 py-1 ${lang === 'FR' ? 'text-blue-600' : 'text-gray-500'}`}
+            <button
+              type="button"
+              onClick={() => setLang("FR")}
+              className={`text-sm font-bold transition hover:text-blue-600 border border-gray-200 rounded-full px-3 py-1 ${
+                lang === "FR" ? "text-blue-600" : "text-gray-500"
+              }`}
             >
               FR
-            </a>
-            <a
-              href="?lang=EN"
-              className={`text-sm font-bold transition hover:text-blue-600 border border-gray-200 rounded-full px-3 py-1 ${lang === 'EN' ? 'text-blue-600' : 'text-gray-500'}`}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setLang("EN")}
+              className={`text-sm font-bold transition hover:text-blue-600 border border-gray-200 rounded-full px-3 py-1 ${
+                lang === "EN" ? "text-blue-600" : "text-gray-500"
+              }`}
             >
               EN
-            </a>
+            </button>
             <a
               href="#contact"
               className="rounded-full bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
@@ -308,19 +324,22 @@ export default function Home() {
             </a>
           </div>
 
-          {/* MOBILE MENU - AVEC LES LIENS À CÔTÉ DU BURGER */}
+          {/* MOBILE MENU - LIENS QUI RECHARGENT LA PAGE */}
           <div className="flex items-center gap-2 lg:hidden">
-            
-            {/* LIENS EN / FR À CÔTÉ DU BURGER (Méthode simple et infaillible) */}
             <a
               href="?lang=FR"
-              className={`text-xs font-bold border border-gray-200 rounded-full px-2 py-1 ${lang === 'FR' ? 'text-blue-600 bg-white' : 'text-gray-500 bg-transparent'}`}
+              className={`text-xs font-bold border border-gray-200 rounded-full px-2 py-1 ${
+                lang === "FR" ? "text-blue-600 bg-white" : "text-gray-500 bg-transparent"
+              }`}
             >
               FR
             </a>
+
             <a
               href="?lang=EN"
-              className={`text-xs font-bold border border-gray-200 rounded-full px-2 py-1 ${lang === 'EN' ? 'text-blue-600 bg-white' : 'text-gray-500 bg-transparent'}`}
+              className={`text-xs font-bold border border-gray-200 rounded-full px-2 py-1 ${
+                lang === "EN" ? "text-blue-600 bg-white" : "text-gray-500 bg-transparent"
+              }`}
             >
               EN
             </a>
