@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   experimental: {
     agentFeedback: true,
   },
@@ -16,9 +15,6 @@ const nextConfig: NextConfig = {
     },
   },
   
-  // 👇 LA LIGNE MAGIQUE POUR VERCEL (Prisma + SQLite)
-  serverExternalPackages: ["better-sqlite3", "@prisma/client"],
-
   // 👇 CONFIGURATION POUR LES IMAGES
   images: {
     remotePatterns: [
